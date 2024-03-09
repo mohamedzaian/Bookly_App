@@ -2,6 +2,7 @@ import 'package:bookly/constants.dart';
 import 'package:bookly/core/Features/models/book_model.dart';
 import 'package:bookly/core/Features/presentation/screens/book_details_screen.dart';
 import 'package:bookly/core/Features/repos/book_repo.dart';
+import 'package:bookly/core/Features/repos/newest_book_repo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,13 +36,13 @@ class HomeScreenBody extends StatelessWidget {
               height: 50,
             ),
             Text(
-              'BestSeller',
+              'Newest Book',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
             SizedBox(
               height: 20,
             ),
-            ListOfBestSeller(),
+            ListOfNewestBook(),
           ],
         ),
       ),
@@ -51,15 +52,15 @@ class HomeScreenBody extends StatelessWidget {
 // ----------------------------------------------------------------------------------------------------------------------------
 // Widgets
 
-class ListOfBestSeller extends StatelessWidget {
-  const ListOfBestSeller({
+class ListOfNewestBook extends StatelessWidget {
+  const ListOfNewestBook({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: BookRepo().getBook(),
+        future: NewestBookRepo().getNewestBook(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -68,21 +69,18 @@ class ListOfBestSeller extends StatelessWidget {
           }
           if (snapshot.hasData) {
             final List listOfBook = snapshot.data;
-            List<String> listOfimage = [];
             return Expanded(
               child: ListView.separated(
                   shrinkWrap: true,
                   itemBuilder: (context, i) {
                     final BookModel item = listOfBook[i];
 
-                    listOfimage.add(item.volumeInfo.imageLinks.thumbnail);
 
                     return GestureDetector(
                       onTap: () {
                         Get.to(
                             () => BookDetailsScreen(
                                   description: item.volumeInfo.description,
-                                  images: listOfimage,
                                   image: item.volumeInfo.imageLinks.thumbnail,
                                   title: item.volumeInfo.title,
                                   author: item.volumeInfo.authors.first,
@@ -196,18 +194,36 @@ class ListOfBooks extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   shrinkWrap: true,
                   itemBuilder: (context, i) {
-                    final BookModel book = listOfitems[i];
-                    return Container(
-                      height: 224,
-                      width: 150,
-                      // child: Image.network(book.volumeInfo.imageLinks.thumbnail),
+                    final BookModel item = listOfitems[i];
+                    return GestureDetector(
+                      onTap: () {
+                        Get.to(
+                                () => BookDetailsScreen(
+                              description: item.volumeInfo.description,
+                              image: item.volumeInfo.imageLinks.thumbnail,
+                              title: item.volumeInfo.title,
+                              author: item.volumeInfo.authors.first,
+                              price: 'Free',
+                              link: item.volumeInfo.previewLink,
+                              contentLink:
+                              item.volumeInfo.canonicalVolumeLink,
+                            ),
+                            transition: Transition.rightToLeft,
+                            duration: Duration(milliseconds: 500));
+                      },
 
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          image: DecorationImage(
-                              image: NetworkImage(
-                                  book.volumeInfo.imageLinks.thumbnail),
-                              fit: BoxFit.fill)),
+                      child: Container(
+                        height: 224,
+                        width: 150,
+                        // child: Image.network(book.volumeInfo.imageLinks.thumbnail),
+
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    item.volumeInfo.imageLinks.thumbnail),
+                                fit: BoxFit.fill)),
+                      ),
                     );
                   }),
             );
@@ -296,7 +312,7 @@ class Search extends SearchDelegate
     {
       return ListView.builder(itemBuilder: (context,i)
       {
-        final BookModel  books=this.book[i];
+        final BookModel books=this.book[i];
 
         return Card(child: Text(books.volumeInfo.title),);
       });

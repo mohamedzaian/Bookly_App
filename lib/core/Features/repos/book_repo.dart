@@ -18,4 +18,9 @@ class BookRepo {
     return books;
   }
 }
+void main ()
+{
+  print(BookRepo().getBook());
+}
+
 

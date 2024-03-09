@@ -34,7 +34,7 @@ class BookModel  extends BookEntity{
     id: json["id"],
     etag: json["etag"],
     selfLink: json["selfLink"],
-    volumeInfo: VolumeInfo.fromJson(json["volumeInfo"]),
+    volumeInfo: VolumeInfo.fromJson(json["volumeInfo"] ?? ''),
     saleInfo: SaleInfo.fromJson(json["saleInfo"]),
     accessInfo: AccessInfo.fromJson(json["accessInfo"]),
   );
@@ -201,27 +201,28 @@ class VolumeInfo {
     }
 
     return VolumeInfo(
-      title: json["title"] ?? "null",
-      subtitle: json["subtitle"] ?? 'nul',
-      authors: List<String>.from(json["authors"].map((x) => x)),
-      publisher: json["publisher"],
+      title: json["title"] ?? "",
+      subtitle: json["subtitle"] ?? "",
+      authors: List<String>.from(json["authors"] ?? []),
+      publisher: json["publisher"] ?? "",
       publishedDate: parsedDate,
-      description: json["description"],
-      industryIdentifiers: List<IndustryIdentifier>.from(json["industryIdentifiers"].map((x) => IndustryIdentifier.fromJson(x))),
-      readingModes: ReadingModes.fromJson(json["readingModes"]),
-      pageCount: json["pageCount"],
-      printType: json["printType"],
-      categories: List<String>.from(json["categories"].map((x) => x)),
-      maturityRating: json["maturityRating"],
-      allowAnonLogging: json["allowAnonLogging"],
-      contentVersion: json["contentVersion"],
-      panelizationSummary: PanelizationSummary.fromJson(json["panelizationSummary"]),
-      imageLinks: ImageLinks.fromJson(json["imageLinks"]),
-      language: json["language"],
-      previewLink: json["previewLink"],
-      infoLink: json["infoLink"],
-      canonicalVolumeLink: json["canonicalVolumeLink"],
+      description: json["description"] ?? "",
+      industryIdentifiers: List<IndustryIdentifier>.from((json["industryIdentifiers"] ?? []).map((x) => IndustryIdentifier.fromJson(x))),
+      readingModes: ReadingModes.fromJson(json["readingModes"] ?? {}),
+      pageCount: json["pageCount"] ?? 0,
+      printType: json["printType"] ?? "",
+      categories: List<String>.from(json["categories"] ?? []),
+      maturityRating: json["maturityRating"] ?? "",
+      allowAnonLogging: json["allowAnonLogging"] ?? false,
+      contentVersion: json["contentVersion"] ?? "",
+      panelizationSummary: PanelizationSummary.fromJson(json["panelizationSummary"] ?? {}),
+      imageLinks: ImageLinks.fromJson(json["imageLinks"] ?? {}),
+      language: json["language"] ?? "",
+      previewLink: json["previewLink"] ?? "",
+      infoLink: json["infoLink"] ?? "",
+      canonicalVolumeLink: json["canonicalVolumeLink"] ?? "",
     );
+
   }
 
   Map<String, dynamic> toJson() => {
@@ -258,7 +259,7 @@ class ImageLinks {
   });
 
   factory ImageLinks.fromJson(Map<String, dynamic> json) => ImageLinks(
-    smallThumbnail: json["smallThumbnail"],
+    smallThumbnail: json["smallThumbnail"] ?? '',
     thumbnail: json["thumbnail"] ?? 'null',
   );
 
@@ -298,8 +299,8 @@ class PanelizationSummary {
   });
 
   factory PanelizationSummary.fromJson(Map<String, dynamic> json) => PanelizationSummary(
-    containsEpubBubbles: json["containsEpubBubbles"],
-    containsImageBubbles: json["containsImageBubbles"],
+    containsEpubBubbles: json["containsEpubBubbles"] ?? false,
+    containsImageBubbles: json["containsImageBubbles"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {

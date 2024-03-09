@@ -13,11 +13,11 @@ class BookDetailsBody extends StatelessWidget {
       required this.title,
       required this.author,
       required this.price,
-        required this.images,
+
         required this.description, required this.link, required this.contantLink
       });
 
-  final List <String> images;
+
   final String image;
   final String title;
   final String author;
