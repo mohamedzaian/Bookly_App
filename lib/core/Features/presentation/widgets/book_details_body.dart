@@ -1,10 +1,5 @@
 import 'package:bookly/constants.dart';
-import 'package:bookly/core/Features/models/book_model.dart';
-import 'package:bookly/core/Features/presentation/screens/description_screen.dart';
-import 'package:bookly/core/Features/repos/book_repo.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class BookDetailsBody extends StatelessWidget {
   BookDetailsBody(

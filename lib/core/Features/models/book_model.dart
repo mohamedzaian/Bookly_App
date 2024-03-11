@@ -30,13 +30,13 @@ class BookModel  extends BookEntity{
   }) : super(title: volumeInfo.title, image: volumeInfo.imageLinks.thumbnail, author: volumeInfo.authors.first , id: id , price: 0);
 
   factory BookModel.fromJson(Map<String, dynamic> json) => BookModel(
-    kind: json["kind"],
-    id: json["id"],
-    etag: json["etag"],
-    selfLink: json["selfLink"],
-    volumeInfo: VolumeInfo.fromJson(json["volumeInfo"] ?? ''),
-    saleInfo: SaleInfo.fromJson(json["saleInfo"]),
-    accessInfo: AccessInfo.fromJson(json["accessInfo"]),
+    kind: json["kind"] ?? '',
+    id: json["id"] ?? '',
+    etag: json["etag"] ?? '',
+    selfLink: json["selfLink"] ?? '',
+    volumeInfo: VolumeInfo.fromJson(json["volumeInfo"] ?? {}),
+    saleInfo: json["saleInfo"] != null ? SaleInfo.fromJson(json["saleInfo"]) : SaleInfo(country: '', saleability: '', isEbook: false),
+    accessInfo: AccessInfo.fromJson(json["accessInfo"] ?? {}),
   );
 
   Map<String, dynamic> toJson() => {
@@ -76,16 +76,16 @@ class AccessInfo {
   });
 
   factory AccessInfo.fromJson(Map<String, dynamic> json) => AccessInfo(
-    country: json["country"],
-    viewability: json["viewability"],
-    embeddable: json["embeddable"],
-    publicDomain: json["publicDomain"],
-    textToSpeechPermission: json["textToSpeechPermission"],
+    country: json["country"] ?? '',
+    viewability: json["viewability"] ?? '',
+    embeddable: json["embeddable"] ?? false,
+    publicDomain: json["publicDomain"] ?? false,
+    textToSpeechPermission: json["textToSpeechPermission"] ?? '',
     epub: Epub.fromJson(json["epub"]),
     pdf: Epub.fromJson(json["pdf"]),
     webReaderLink: json["webReaderLink"],
     accessViewStatus: json["accessViewStatus"],
-    quoteSharingAllowed: json["quoteSharingAllowed"],
+    quoteSharingAllowed: json["quoteSharingAllowed"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -112,7 +112,7 @@ class Epub {
   });
 
   factory Epub.fromJson(Map<String, dynamic> json) => Epub(
-    isAvailable: json["isAvailable"],
+    isAvailable: json["isAvailable"] ?? false,
     acsTokenLink: json["acsTokenLink"] ?? '123',
   );
 
@@ -136,7 +136,7 @@ class SaleInfo {
   factory SaleInfo.fromJson(Map<String, dynamic> json) => SaleInfo(
     country: json["country"],
     saleability: json["saleability"],
-    isEbook: json["isEbook"],
+    isEbook: json["isEbook"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {
@@ -319,8 +319,8 @@ class ReadingModes {
   });
 
   factory ReadingModes.fromJson(Map<String, dynamic> json) => ReadingModes(
-    text: json["text"],
-    image: json["image"],
+    text: json["text"] ?? false,
+    image: json["image"] ?? false,
   );
 
   Map<String, dynamic> toJson() => {

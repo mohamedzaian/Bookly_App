@@ -1,4 +1,3 @@
-import 'package:bookly/core/Features/entitys/book_entity.dart';
 import 'package:bookly/core/Features/models/book_model.dart';
 import 'package:dio/dio.dart';
 
@@ -7,7 +6,7 @@ class BookRepo {
 
   Future getBook() async {
     final res = await dio.get('https://www.googleapis.com/books/v1/volumes?Filtering=free-ebooks&Sorting=relevance&q=subject:Programming');
-    final List<BookModel> books = [];
+     List<BookModel> books = [];
     final items = res.data['items'];
     for (var book in items) {
       final bookModel = BookModel.fromJson(book);
@@ -18,9 +17,8 @@ class BookRepo {
     return books;
   }
 }
-void main ()
-{
-  print(BookRepo().getBook());
-}
+
+
+
 
 
